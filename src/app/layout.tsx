@@ -15,6 +15,9 @@ const outfit = Outfit({
 
 export const metadata: Metadata = {
   title: "Wavey Media | Creator-Led Campaigns, Perception & Impact Storytelling",
+  icons: {
+    icon: "/logo.svg",
+  },
   description:
     "Wavey Media builds creator-led campaigns that make brands, founders and impact initiatives visible in the right way — through the right creators, pages, journalists and communities.",
   metadataBase: new URL("https://www.waveymedia.in"),

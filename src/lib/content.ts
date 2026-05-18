@@ -59,7 +59,7 @@ export const heroCards: {
 
 export const trustedBy = {
   eyebrow: "Trusted By",
-  headline: "Conglomerates, challengers, and a few names we can't print.",
+  headline: "Conglomerates, challengers, and the ones that stay under the hood.",
   subtext:
     "The brands that hire us aren't looking for visibility on our website. They're looking for results in their market: sharper perception, stronger conversations, and reputation that holds up under pressure. We give them that, and we let them take the credit. Every time.",
   stats: [

@@ -15,6 +15,8 @@ interface FormState {
   email: string;
   phone: string;
   audience: Audience;
+  companyName?: string;
+  socialMediaLinks?: string;
   message: string;
 }
 
@@ -23,6 +25,8 @@ const initialForm: FormState = {
   email: "",
   phone: "",
   audience: "brand",
+  companyName: "",
+  socialMediaLinks: "",
   message: "",
 };
 
@@ -40,6 +44,12 @@ export function Contact() {
       next.email = "Valid email is required";
     }
     if (!form.phone.trim()) next.phone = "Phone is required";
+    if (form.audience === "brand" && !form.companyName?.trim()) {
+      next.companyName = "Company name is required";
+    }
+    if (form.audience === "influencer" && !form.socialMediaLinks?.trim()) {
+      next.socialMediaLinks = "Social media links are required";
+    }
     setErrors(next);
     return Object.keys(next).length === 0;
   };
@@ -61,6 +71,8 @@ export function Contact() {
             email: form.email,
             phone: form.phone,
             audience: form.audience,
+            companyName: form.companyName,
+            socialMediaLinks: form.socialMediaLinks,
             message: form.message,
           }),
         });
@@ -77,9 +89,8 @@ export function Contact() {
     const subject = encodeURIComponent(
       `Wavey Media inquiry — ${form.audience === "brand" ? "Brand" : "Influencer"}`,
     );
-    const body = encodeURIComponent(
-      `Name: ${form.name}\nEmail: ${form.email}\nPhone: ${form.phone}\nType: ${form.audience}\n\nMessage:\n${form.message}`,
-    );
+    const bodyContent = `Name: ${form.name}\nEmail: ${form.email}\nPhone: ${form.phone}\nType: ${form.audience}${form.audience === "brand" ? `\nCompany: ${form.companyName}` : `\nSocial Links: ${form.socialMediaLinks}`}\n\nMessage:\n${form.message}`;
+    const body = encodeURIComponent(bodyContent);
     window.location.href = `mailto:${siteConfig.email}?subject=${subject}&body=${body}`;
     setStatus("success");
     setForm(initialForm);
@@ -155,6 +166,42 @@ export function Contact() {
                 )}
               </div>
             </div>
+
+            {form.audience === "brand" && (
+              <div>
+                <label htmlFor="companyName" className="mb-1.5 block text-sm font-medium">
+                  Company Name *
+                </label>
+                <input
+                  id="companyName"
+                  value={form.companyName || ""}
+                  onChange={(e) => setForm((f) => ({ ...f, companyName: e.target.value }))}
+                  className={inputClass("companyName")}
+                  placeholder="Your company name"
+                />
+                {errors.companyName && (
+                  <p className="mt-1 text-xs text-red-500">{errors.companyName}</p>
+                )}
+              </div>
+            )}
+
+            {form.audience === "influencer" && (
+              <div>
+                <label htmlFor="socialMediaLinks" className="mb-1.5 block text-sm font-medium">
+                  Social Media Links / Profiles *
+                </label>
+                <input
+                  id="socialMediaLinks"
+                  value={form.socialMediaLinks || ""}
+                  onChange={(e) => setForm((f) => ({ ...f, socialMediaLinks: e.target.value }))}
+                  className={inputClass("socialMediaLinks")}
+                  placeholder="e.g., Instagram: @yourhandle, YouTube: channel link"
+                />
+                {errors.socialMediaLinks && (
+                  <p className="mt-1 text-xs text-red-500">{errors.socialMediaLinks}</p>
+                )}
+              </div>
+            )}
 
             <div>
               <label htmlFor="phone" className="mb-1.5 block text-sm font-medium">
